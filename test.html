@@ -1,0 +1,90 @@
+<html>
+  <head>
+     <title>Trezor integration example.</title>
+  </head>
+  <body>
+  <p>
+  Trezor integration
+  <div id="currentAddress"></div>
+  </p>
+  <div id="meta-mask-required"></div>
+
+  <fieldset>
+    <button onclick="extratcPublicKey()">extract public key</button>
+  </fieldset>
+
+  <fieldset>
+    <label> Ether:
+      <input type="text" id="amount"></input>
+    </label>
+    <button onclick="send()">Sending ether to an address</button>
+    <div id="response"></div>
+  </fieldset>
+
+  <fieldset>
+    <label> Sending token
+      <input type="text" id="kycAddress"></input>
+    </label>
+    <button onclick="verifyKYC()">Invoke verifyKYC</button>
+    <div id="response"></div>
+  </fieldset>
+
+  <script src="https://connect.trezor.io/4/connect.js"></script>
+
+  <script>
+
+    function extratcPublicKey() {
+
+
+      var path = "m/44'/0'/0'"; // first BIP44 account
+
+      // var path = [44 | 0x80000000,
+      //             0  | 0x80000000,
+      //             0  | 0x80000000]; // same, in raw form
+
+      TrezorConnect.setCurrency('BTC');
+      TrezorConnect.getXPubKey(path, function (result) {
+          if (result.success) {
+              console.log('XPUB:', result.xpubkey); // serialized XPUB
+          } else {
+              console.error('Error:', result.error); // error message
+          }
+      });
+      
+      console.log('here!!!')
+    }
+    // window.onload = function() {
+    //   if (typeof web3 !== 'undefined') {
+    //       console.warn("Using web3 detected from external source like Metamask")
+    //       window.web3 = new Web3(web3.currentProvider);
+    //       document.getElementById('currentAddress').innerHTML = 'INFO ----- signed in address in metamask: ' + web3.eth.accounts[0] + ' ----- web3 version: ' + web3.version.api + '----- current crowdsale address: ' + contractAddress
+    //   } else {
+    //       window.alert("No web3 detected. This site is a Web3 Dapp - to proceed you will need to get Metamask - https://metamask.io/ \nTo serve this via a web server - chrome disabled metamask if this is loaded from file system, in the project folder / npm install / npm start / go to localhost:3000");
+    //   }
+    // }
+    // function send() {
+    //   web3.eth.sendTransaction({
+    //     from: web3.eth.coinbase,
+    //     to: '0x42AA3D8a40C9Bd501f92617a280a539f3Cb6957A',
+    //     value: web3.toWei(document.getElementById("amount").value, 'ether')
+    //   }, function(error, result) {
+    //     if (!error) {
+    //       document.getElementById('response').innerHTML = 'Success: <a href="https://testnet.etherscan.io/tx/' + result + '"> View Transaction </a>'
+    //     } else {
+    //       document.getElementById('response').innerHTML = '<pre>' + error + '</pre>'
+    //     }
+    //   })
+    // }
+    // function verifyKYC() {
+    //   var kycAddress = document.getElementById("kycAddress").value;
+    //   var contract = web3.eth.contract(abi).at(contractAddress)
+    //   contract.verifyKYC(kycAddress, 
+    //     { gas:3900000,
+    //       gasPrice: 40000000000},
+    //     function(error, hash){  
+    //     console.log(hash)
+    //   })
+    // }
+  </script>
+  </body>
+</html>
